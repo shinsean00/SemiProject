@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="mapper.order">
+    <resultMap id="ordResult" type="com.mySpring.myapp.order.vo.OrderVO">
+	    <result property="order_no" column="order_no" />
+	    <result property="order_date" column="order_date" />
+	    <result property="order_quantity" column="order_quantity" />
+	    <result property="order_total_price" column="order_total_price" />
+	    <result property="order_member_id" column="order_member_id" />
+	    <result property="order_name" column="order_name" />
+	    <result property="order_tel" column="order_tel" />
+	    <result property="order_address" column="order_address" />
+	    <result property="order_paytype" column="order_paytype" />
+	    <result property="order_paid" column="order_paid" />
+	    <result property="order_paydate" column="order_paydate" />
+	    <result property="order_remark" column="order_remark" />
+	    <result property="product_no" column="product_no" />
+	    <!-- 상품 정보 매핑 추가 -->
+	    <association property="product" javaType="com.mySpring.myapp.product.vo.ProductVO">
+	        <result property="product_name" column="product_name" />
+	        <result property="product_origin" column="product_origin" />
+	        <result property="product_price" column="product_price" />
+	        <!-- 추가로 필요한 상품 정보들을 여기에 추가 -->
+	    </association>
+	</resultMap>
+	
+	<select id="selectProductByNo" parameterType="int" resultType="com.mySpring.myapp.product.vo.ProductVO">
+	    <![CDATA[
+	    SELECT * FROM t_product
+	    WHERE product_no = #{productNo}
+	    ]]>
+	</select>
+	    
+    <select id="selectAllOrderList" resultMap="ordResult">
+        <![CDATA[
+            SELECT o.*, p.product_name, p.product_origin, p.product_price
+            FROM t_order o
+            JOIN t_product p ON o.product_no = p.product_no
+            ORDER BY o.order_date DESC
+        ]]>
+    </select>
+    
+    <select id="selectAllOrderListById" resultMap="ordResult">
+        <![CDATA[
+            SELECT o.*, p.product_name, p.product_origin, p.product_price
+            FROM t_order o
+            JOIN t_product p ON o.product_no = p.product_no
+            WHERE o.order_member_id = #{order_member_id}
+            ORDER BY o.order_date DESC
+        ]]>
+    </select>
+    
+    <insert id="registerOrder" parameterType="com.mySpring.myapp.order.vo.OrderVO">
+    <![CDATA[
+ 		 INSERT INTO T_order (order_no, order_date, order_quantity, order_total_price,
+                       order_member_id, order_tel, order_address, product_no, order_name)
+ 		 VALUES (seq_order_no.nextval, #{order_date}, #{order_quantity}, #{order_total_price},
+          #{order_member_id}, #{order_tel}, #{order_address}, #{product_no}, #{order_name})
+          ]]>
+	</insert>
+	
+	 <select id="getOrderByNo" resultMap="ordResult" >
+ 	 <![CDATA[
+  		SELECT o.*, p.product_name, p.product_origin, p.product_price
+            FROM t_order o
+            JOIN t_product p ON o.product_no = p.product_no
+            WHERE o.order_no = #{order_no}
+            ORDER BY o.order_date DESC
+	  ]]>    	
+  	</select>
+    
+    <select id="selectAllOrder" resultMap="ordResult">
+        <![CDATA[
+            SELECT *
+			FROM t_order
+			WHERE order_no = #{orderNo}
+        ]]>
+    </select>
+    
+	<delete id="deleteOrder" parameterType="String">
+	<![CDATA[
+	   delete from  t_order
+	   where
+	   order_no=#{order_no}
+	]]>
+	</delete>
+
+</mapper>

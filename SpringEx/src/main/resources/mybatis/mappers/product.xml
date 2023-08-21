@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.product">
+	<resultMap id="proResult" type="productVO">
+		<result property="product_no" column="product_no" />
+		<result property="product_type" column="product_type" />
+		<result property="product_name" column="product_name" />
+		<result property="product_origin" column="product_origin" />
+		<result property="product_price" column="product_price" />
+		<result property="product_quantity" column="product_quantity" />
+		<result property="product_regproduct_id" column="product_regproduct_id" />
+		<result property="product_regdate" column="product_regdate" />
+		<result property="product_modproduct_id" column="product_modproduct_id" />
+		<result property="product_moddate" column="product_moddate" />
+	</resultMap>
+	<!-- <resultMap id="memResult" type="java.util.HashMap"> <result property="id" 
+		column="id" /> <result property="pwd" column="pwd" /> <result property="name" 
+		column="name" /> <result property="email" column="email" /> <result property="joinDate" 
+		column="joinDate" /> </resultMap> -->
+
+
+	<select id="selectAllProductList" resultMap="proResult">
+      <![CDATA[
+         select * from t_product order by product_regdate desc	 	
+      ]]>
+	</select>
+
+	<select id="getProductByNo" parameterType="String"
+		resultType="productVO">
+ 	 <![CDATA[
+  		select * from t_product
+  		where product_no = #{product_no}
+	  ]]>
+	</select>
+
+
+	<insert id="insertProduct" parameterType="productVO">
+    <![CDATA[
+        insert into t_product(product_no, product_type, product_name, product_origin, product_price, product_quantity, product_regmember_id)
+        values(seq_product_no.nextval, #{product_type}, #{product_name}, #{product_origin}, #{product_price}, #{product_quantity}, #{product_regmember_id})
+    ]]>
+	</insert>
+
+	<update id="updateProduct" parameterType="productVO">
+    <![CDATA[
+        update t_product
+        set product_type = #{product_type, jdbcType=VARCHAR},
+            product_name = #{product_name, jdbcType=VARCHAR},
+            product_origin = #{product_origin, jdbcType=VARCHAR},
+            product_price = #{product_price, jdbcType=NUMERIC},
+            product_quantity = #{product_quantity, jdbcType=NUMERIC},
+            product_modmember_id = #{product_modmember_id, jdbcType=VARCHAR},
+            product_moddate = #{product_moddate, jdbcType=DATE}
+        where product_no = #{product_no}
+    ]]>
+	</update>
+
+
+	<delete id="deleteProduct" parameterType="String">
+	<![CDATA[
+	   delete from  t_product
+	   where
+	   product_no=#{product_no}
+	]]>
+	</delete>
+	
+	<select id="selectProductThumbnail" resultMap="proResult">
+		<![CDATA[
+		select product_no, product_name, product_price from t_product order by product_no
+		]]> 
+	</select>
+	
+	<select id="selectProductDetail" resultMap="proResult">
+	<![CDATA[
+		select *
+		from t_product
+		where product_no = #{productNo}
+	]]>
+	</select>
+
+	<select id="getProductCountByType" resultType="int">
+    <![CDATA[
+    SELECT COUNT(*) FROM t_product WHERE product_type = #{productType}
+    ]]>
+	</select>
+</mapper>

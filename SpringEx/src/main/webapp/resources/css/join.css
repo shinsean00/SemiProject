@@ -1,0 +1,96 @@
+/* COMMON */
+body {
+  color: #333;
+  font-size: 16px;
+  font-weight: 400px;
+  line-height: 1.4;
+  font-family: 'Nanum Gothic', sans-serif;
+  margin: 0;
+  padding: 0;
+  
+} 
+
+img {
+  width: 250px;
+  display: block;
+}
+a {
+  text-decoration: none;
+}
+
+#wrapper {
+  min-height: 10vh;
+  position: relative;
+  width: 100%;
+
+}
+/* 회원가입 */
+.Join {
+  margin-top: 130px;
+  padding: 100px p 150px;
+  /* 푸터 고정 */
+  padding-bottom: 190px;
+   /*  */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.Join h1 .goru{
+ margin: auto;
+}
+.Join .join__card h4 {
+  color: #FE6641;
+
+}
+.join__card{
+  width: 500px;
+  margin: 0 auto;
+  border-radius: 6px;
+  color: #555;
+}
+.join__card form div{
+  width: 100%;
+  display: flex;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.join__card form input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.join__card form select {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+/* 가입 [] : 속성 선택자  */
+.join__card form [type="submit"] { 
+  background-color: #f6f5f0;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  cursor: pointer;
+
+}
+.join__card form [type="submit"]:hover { 
+  background-color: #FE6641;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}

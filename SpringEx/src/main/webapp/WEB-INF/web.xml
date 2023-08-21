@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://Java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!--  Root Spring 컨테이너가 모든 서블릿과 필터에서 공유되는 것을 설명 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>	<!-- 컨텍스트 파라미터의 이름 설정 -->
+		<param-value>/WEB-INF/spring/action-mybatis.xml</param-value> <!-- 컨텍스트 파라미터의 값으로 Spring 설정 파일의 경로를 지정 -->
+	</context-param>
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<!-- Spring 컨테이너를 생성하는 리스너를 정의하는 부분. 모든 서블릿과 필터에서 공유되는 Spring 컨테이너를 생성한다는 것을 설명 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>	<!-- 리스너의 클래스를 설정. Spring 컨테이너를 생성하고 초기화한다. 이 리스너는 웹 애플리케이션의 시작 시점에 동작하여 Spring 컨테이너를 생성하고 설정 파일을 로드-->
+	</listener>
+
+	<!-- Processes application requests -->
+	<!-- 애플리케이션 요청을 처리하는 서블릿을 정의하는것을 설명.  -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>	<!-- 서블릿의 이름을 설정 -->
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>	<!-- 서블릿의 클래스를 설정 DispatcherServlet 클래스를 사용하여 애플리케이션 요청을 처리-->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>	<!-- 초기화 매개변수의 이름을 설정 -->
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>	<!-- 초기화 매개변수의 값으로 Spring MVC 설정 파일의 경로를 설정  -->
+		</init-param>
+		<load-on-startup>1</load-on-startup>	<!--  서블릿의 시작 순서를 설정.  "1"로 설정되었으므로 서블릿 컨테이너가 시작될 때 서블릿을 로드하도록 설정 -->
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>	<!--  서블릿의 이름을 설정. 앞서 정의한 "appServlet"과 동일 -->
+		<url-pattern>//*</url-pattern>
+		<url-pattern>*.do</url-pattern>	<!-- 서블릿의 매핑 URL 패턴을 설정. 여기서는 "/"로 설정되었으므로 애플리케이션의 모든 URL에 대해 이 서블릿으로 요청이 전달 -->
+	</servlet-mapping>
+	
+	<!-- 모든 요청에 대한 인코딩 설정을 UTF-8로 하겠다 -->
+	<filter>
+	    <filter-name>encodingFilter</filter-name>
+	    <filter-class>
+	        org.springframework.web.filter.CharacterEncodingFilter
+	    </filter-class>
+	    <init-param>
+	        <param-name>encoding</param-name>
+	        <param-value>UTF-8</param-value>
+	     </init-param>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>encodingFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 에러페이지 처리 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error404.jsp</location>
+	</error-page>
+	
+	<!--
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/error500.jsp</location>
+	</error-page>
+	-->
+		
+</web-app>

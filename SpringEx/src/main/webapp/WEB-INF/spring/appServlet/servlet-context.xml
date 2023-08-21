@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+<!-- 
+<beans:beans> 태그는 Spring Bean 설정을 포함하는 루트 요소. 
+xmlns 속성을 통해 네임스페이스를 선언하고, xsi:schemaLocation 속성을 통해 스키마 위치를 지정한다.
+
+xmlns:mvc는 Spring MVC 네임스페이스를 선언하며, http://www.springframework.org/schema/mvc를 가리킨다.
+xmlns:beans는 Spring Bean 네임스페이스를 선언하며, http://www.springframework.org/schema/beans를 가리킨다.
+xmlns:context는 Spring 컨텍스트 네임스페이스를 선언하며, http://www.springframework.org/schema/context를 가리킨다.
+
+xsi:schemaLocation은 네임스페이스와 스키마 위치를 매핑한 속성. 여기서는 각 네임스페이스에 해당하는 스키마 위치를 지정하고 있다. 
+예를 들어 http://www.springframework.org/schema/mvc 네임스페이스에 대한 스키마 위치는 https://www.springframework.org/schema/mvc/spring-mvc.xsd다.
+
+이 파일에서는 Spring MVC 관련 설정을 포함하고 있으며, Spring MVC의 동작 방식, 핸들러 매핑, 뷰 리졸버 등을 구성할 수 있다.
+ -->
+ 
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<!--DispatcherServlet의 요청 처리 인프라를 정의 하고 있다-->
+	
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+	<!-- 
+	<annotation-driven />은 Spring MVC의 @Controller 프로그래밍 모델을 활성화하는 역할. 
+	이를 통해 Spring MVC 애플리케이션에서 애노테이션을 사용하여 컨트롤러를 정의하고 요청을 처리할 수 있다. 
+	-->
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<!-- 
+	<resources> 태그는 /resources/** 경로에 대한 정적 리소스 처리를 설정. 
+	이를 통해 ${webappRoot}/resources 디렉토리의 정적 리소스를 효율적으로 제공할 수 있다.
+	 -->
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<!--  
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	 -->
+ 	<!-- 
+ 	주석처리된 내용.
+ 	InternalResourceViewResolver 클래스를 사용하여 JSP 뷰를 해석. 
+ 	/WEB-INF/views/ 디렉토리에서 .jsp 확장자를 가진 리소스를 찾아 뷰로 사용.
+ 	 -->
+	 
+	 <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>classpath:tiles/*.xml</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="preparerFactoryClass"
+			          value="org.springframework.web.servlet.view.tiles2.SpringBeanPreparerFactory" />
+	</beans:bean>
+	<!-- 
+	<beans:bean> 태그는 id 속성이 "tilesConfigurer"인 TilesConfigurer 클래스의 인스턴스를 정의하고있다. 
+	TilesConfigurer는 Tiles 프레임워크를 Spring MVC와 통합하기 위해 사용되는 클래스이며.
+	<beans:property> 태그를 통해 TilesConfigurer 객체의 속성을 설정하고있다. 
+	definitions 속성은 Tiles의 정의 파일 경로를 설정하는데, classpath:tiles/*.xml 값으로 지정되어 있다. 
+	이는 tiles 디렉토리에 있는 XML 파일들을 Tiles의 정의 파일로 사용한다는 의미다.
+	<beans:list>는 Spring의 <list> 요소를 나타내는 XML 태그. 여러 개의 값을 가지는 리스트 컬렉션을 정의하는 데 사용.
+	<beans:value>는 <list>의 요소로, 리스트에 포함될 값을 정의하는 태그. 
+	여러 개의 <beans:value> 태그를 사용하여 리스트에 원하는 값들을 추가할 수 있다.
+
+	preparerFactoryClass 속성은 Tiles에서 사용할 PreparerFactory의 클래스를 설정하고있다. 
+	현재 설정에서는 org.springframework.web.servlet.view.tiles2.SpringBeanPreparerFactory 클래스가 사용되고 있으며. 
+	이 클래스는 Spring의 빈을 Tiles Preparer로 사용할 수 있도록 지원한다.
+
+	종합해서 위 설정은 Tiles 프레임워크를 Spring MVC와 통합하여 뷰를 관리하는 데 사용되는 설정인 것이고. 
+	Tiles 정의 파일과 PreparerFactory 설정을 지정하여 Tiles의 기능을 활용할 수 있다.
+	 -->
+	
+	<beans:bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
+	</beans:bean>
+	<!-- 
+	<beans:bean> 태그는 id가 "viewResolver"인 빈을 정의하고 있다. 
+	이 빈은 org.springframework.web.servlet.view.UrlBasedViewResolver 클래스를 사용하여 URL 기반 뷰를 해석하는 역할을 수행한다.
+	<beans:property> 태그는 viewClass라는 속성을 정의하고 있으며, 그 값으로 org.springframework.web.servlet.view.tiles2.TilesView 클래스를 사용하고 있습니다.
+	이 빈이 생성될 때 해당 속성에 값을 할당하게 됩니다.
+	따라서 위의 코드는 "viewResolver"라는 ID를 가진 빈을 생성하며, 해당 빈은 UrlBasedViewResolver 클래스를 사용하여 TilesView를 해석하는 뷰 리졸버 역할을 수행.
+	 -->
+	 
+	<context:component-scan base-package="com.mySpring.myapp" />
+	
+	<!-- 
+	<context:component-scan>은 Spring에서 컴포넌트 스캔을 설정하기 위한 XML 태그. 
+	컴포넌트 스캔은 지정된 패키지에서 애노테이션으로 표시된 컴포넌트들을 자동으로 검색하고 등록하는 기능을 제공.
+	base-package 속성을 사용하여 "com.mySpring.myapp" 패키지를 기준으로 컴포넌트 스캔을 수행. 
+	이는 해당 패키지와 하위 패키지에서 @Component, @Controller, @Service, @Repository 등의 애노테이션이 지정된 클래스들을 검색하여 Spring의 컨테이너에 등록한다.
+	즉, 위의 설정은 "com.mySpring.myapp" 패키지 내에서 애노테이션으로 표시된 컴포넌트들을 자동으로 검색하여 Spring의 컨테이너에서 관리하도록 설정하는 것을 의미한다.
+	
+	 -->
+	<mvc:interceptors>
+    	<mvc:interceptor>
+	    	<mvc:mapping path="/*/*.do"/>
+	   		<beans:bean class="com.mySpring.myapp.common.interceptor.ViewNameInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!-- 
+	<mvc:interceptors>는 Spring MVC에서 인터셉터를 설정하기 위한 XML 태그이다. 
+	인터셉터는 클라이언트의 요청을 가로채어 처리 전후에 원하는 로직을 수행할 수 있는 기능을 제공한다.
+	위의 코드에서 <mvc:interceptor> 태그는 path 속성을 사용하여 "//.do" 패턴의 URL 경로를 가진 요청에 대해 인터셉터를 적용하며. 
+	이는 확장자가 ".do"로 끝나는 모든 URL에 인터셉터를 적용한다는 의미.
+	<beans:bean> 태그를 사용하여 com.mySpring.myapp.common.interceptor.ViewNameInterceptor 클래스를 인터셉터로 등록한다. 
+	이 인터셉터는 요청 처리 전후에 원하는 로직을 수행할 수 있으며, 주로 View 이름 변경 등의 작업을 수행하는 데 사용된다.
+	즉, 위의 설정은 "//.do" 패턴의 URL 경로를 가진 요청에 대해 com.mySpring.myapp.common.interceptor.ViewNameInterceptor 인터셉터를 적용하여 요청 처리 전후에 원하는 로직을 수행하도록 설정하는 것을 의미.
+	 -->
+
+	<!-- 멀티파트 리졸버 -->
+	<beans:bean id="multipartResolver" 	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="52428800" />
+		<beans:property name="maxInMemorySize" value="52428800" />
+		<beans:property name="defaultEncoding" value="utf-8" />
+	</beans:bean>
+	
+	
+</beans:beans>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+   <definition name="baseLayout"  template="/WEB-INF/views/common/layout.jsp">
+      <put-attribute name="title" value="" />
+      <put-attribute name="header" value="/WEB-INF/views/common/mall_header.jsp" />
+      <put-attribute name="side" value="/WEB-INF/views/common/side.jsp" />
+      <put-attribute name="body" value="" />
+      <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+   </definition>
+
+   
+    <definition name="/order/listOrders" extends="baseLayout">
+      <put-attribute name="title" value="주문목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/order/listOrders.jsp" />
+      <put-attribute name="header" value="/WEB-INF/views/common/admin_header.jsp" />
+   </definition>
+   
+   
+   <definition name="/order/listOrdersById" extends="baseLayout">
+      <put-attribute name="title" value="주문목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/order/listOrdersById.jsp" />
+      <put-attribute name="header" value="/WEB-INF/views/common/mall_header.jsp" />
+   </definition>
+   
+   
+   <definition name="/order/viewOrder" extends="baseLayout">
+      <put-attribute name="title" value="주문상세창" />
+      <put-attribute name="body" value="/WEB-INF/views/order/viewOrder.jsp" />
+      <put-attribute name="header" value="/WEB-INF/views/common/mall_header.jsp" />
+   </definition>
+   
+   
+   <definition name="/order/viewOrderDetail" extends="baseLayout">
+      <put-attribute name="title" value="주문 상세" />
+      <put-attribute name="body" value="/WEB-INF/views/order/viewOrderDetail.jsp" />
+      <put-attribute name="header" value="/WEB-INF/views/common/admin_header.jsp" />
+    </definition>
+ </tiles-definitions>
+ 
+   

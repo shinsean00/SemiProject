@@ -1,0 +1,92 @@
+/* COMMON */
+body {
+  color: #333;
+  font-size: 16px;
+  font-weight: 400px;
+  line-height: 1.4;
+  font-family: 'Nanum Gothic', sans-serif;
+  margin: 0;
+  padding: 0;
+  
+} 
+
+img {
+  display: block;
+  width: 250px;
+}
+a {
+  text-decoration: none;
+}
+
+#wrapoer {
+  min-height: 10vh;
+  position: relative;
+  width: 100%;
+
+}
+
+/*로그인*/
+.signin {
+  margin-top: 130px;
+  padding: 100px p 150px;
+  padding-bottom: 190px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+.signin h1 .goru{
+ margin: auto;
+}
+
+.signin__card{
+  width: 500px;
+  margin: 0 auto;
+  border-radius: 6px;
+  color: #555;
+}
+.signin__card form {
+  padding: 30px 22px;
+}
+.signin__card form input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+/* 로그인 [] : 속성 선택자  */
+.signin__card form [type="submit"] { 
+  background-color: #f6f5f0;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  cursor: pointer;
+}
+.signin__card form [type="submit"]:hover { 
+  background-color: #fe6641;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.signin__card .actions {
+  text-align: right;
+
+}
+.signin__card .actions a {
+  flex-grow: 1;
+  flex-basis: 0;
+  padding: 30px;
+  color: #555;
+  font-size: 14px;
+}
+
+.signin__card .actions a:hover {
+  text-decoration: underline;  
+}
+

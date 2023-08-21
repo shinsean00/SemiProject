@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.member">
+	<resultMap id="memResult" type="memberVO">
+		<result property="type" column="type" />
+		<result property="id" column="id" />
+        <result property="pwd" column="pwd" />
+        <result property="name" column="name" />
+        <result property="birth" column="birth" />
+        <result property="email" column="email" />
+        <result property="tel" column="tel" />
+        <result property="address" column="address" />
+        <result property="joinDate" column="joinDate" />
+	</resultMap> 
+	<!-- 
+	<resultMap id="memResult" type="java.util.HashMap">
+      <result property="id" column="id" />
+      <result property="pwd" column="pwd" />
+      <result property="name" column="name" />
+      <result property="email" column="email" />
+      <result property="joinDate" column="joinDate" />
+   </resultMap> -->
+
+	<insert id="insertMember"  parameterType="memberVO">
+		<![CDATA[
+		 insert into t_member(type, id, pwd, name, birth, email, tel, address)
+		 values(#{type}, #{id}, #{pwd}, #{name}, #{birth}, #{email}, #{tel}, #{address})
+		]]>      
+	</insert>
+	
+	<select id="loginById"  resultType="memberVO"   parameterType="memberVO" >
+	<![CDATA[
+		select * from t_member	
+		where id=#{id} and pwd=#{pwd}		
+	]]>
+  </select>
+
+	<select id="selectAllMemberList" resultMap="memResult">
+      <![CDATA[
+         select * from t_member	order by joinDate desc	 	
+      ]]>
+	</select>
+	
+	<select id="getMemberById" parameterType="String" resultType="memberVO" >
+ 	 <![CDATA[
+  		select * from t_member
+  		where id = #{id}
+	  ]]>    	
+  	</select>
+    
+   <update id="modMember"  parameterType="memberVO">
+		<![CDATA[
+		update t_member
+		set type=#{type, jdbcType=VARCHAR}, 
+		id=#{id,jdbcType=VARCHAR}, 
+		pwd=#{pwd,jdbcType=VARCHAR},
+		name=#{name,jdbcType=VARCHAR},
+		birth=#{birth,jdbcType=DATE}, 
+		email=#{email, jdbcType=VARCHAR}, 
+		tel=#{tel, jdbcType=VARCHAR}, 
+		address=#{address, jdbcType=VARCHAR},
+		modDate = #{modDate, jdbcType=DATE}
+		  where
+	     id=#{id}
+		]]>      
+	</update>
+     
+   <delete id="deleteMember"  parameterType="String">
+	<![CDATA[
+	   delete from  t_member
+	   where
+	   id=#{id}
+	]]>      
+  </delete>
+  
+</mapper>

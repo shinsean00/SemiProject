@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+ xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+<!-- 
+XML 네임스페이스를 정의하고 필요한 스키마 파일을 로드하는 부분이다.
+<beans>: Spring Bean 설정 파일의 루트 요소를 나타낸다. 
+xsi:schemaLocation: XML 스키마 파일의 위치를 지정한다.
+xmlns: tx라는 접두사를 사용하여 http://www.springframework.org/schema/tx 네임스페이스를 참조
+xmlns: context라는 접두사를 사용하여 http://www.springframework.org/schema/context 네임스페이스를 참조
+-->
+	<!-- PropertyPlaceholderConfigurer 클래스를 사용하여 프로퍼티 파일을 처리하는 역할을 수행한다. 프로퍼티 파일에 정의된 값을 가져와서 Spring 컨텍스트에서 사용할 수 있게 되며. 프로퍼티 파일을 통해 데이터베이스 연결 정보 등을 외부에서 설정하고 주입할 수 있다. -->
+	<bean id="propertyPlaceholderConfigurer"	
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<!-- 
+	id: Bean의 고유한 식별자 이름.
+	class: Bean으로 생성될 객체의 클래스 이름. Spring 컨테이너는 이 클래스를 인스턴스화하여 Bean으로 관리한다.
+	-->
+	<property name="locations">	<!-- <property> 태그는 객체의 속성 값을 설정하는 데 사용된다.   -->
+	<value>/WEB-INF/config/jdbc.properties</value>	<!-- 해당 경로에 위치한 jdbc프로퍼티 파일을 참조 -->
+	</property>
+	</bean>
+	
+
+	<bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+	<!-- 
+	id: Bean의 고유한 식별자 이름.
+	class: Bean으로 생성될 객체의 클래스 이름. Spring 컨테이너는 이 클래스를 인스턴스화하여 Bean으로 관리한다.
+	-->
+		<property name="driver" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 
+		<property> 태그는 객체의 속성 값을 설정하는 데 사용된다. 
+		여기서는 dataSource 객체의 driver, url, username, password 속성에 각각 
+		${jdbc.driverClassName}, ${jdbc.url}, ${jdbc.username}, ${jdbc.password} 값을 설정하고 있다. 
+		이 값들은 jdbc.properties 파일에 정의되어 있는 값들로 대체된다.
+		 -->
+	</bean>
+	
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+	<!-- 
+	id: Bean의 고유한 식별자 이름.
+	class: Bean으로 생성될 객체의 클래스 이름. Spring 컨테이너는 이 클래스를 인스턴스화하여 Bean으로 관리한다.
+	-->
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis/model/modelConfig.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/mappers/*.xml" />
+		<!-- 
+		<property> 태그를 사용하여 객체의 속성 값을 설정하고 있다. ref속성은 다른 빈 객체를 참조하고자 할 때 사용
+		dataSource 속성은 ref 속성을 사용하여 dataSource라는 id를 가진 객체를 참조하도록 설정하고 있다.
+		이렇게 함으로써 sqlSessionFactory 객체는 해당 데이터 소스를 사용하여 SQL 문을 실행할 수 있다.
+		configLocation 속성은 value 속성을 사용하여 classpath:mybatis/model/modelConfig.xml 파일을 설정하고 있다. 
+		이 파일은 MyBatis의 설정 파일로서, 데이터베이스 연결 및 매퍼 설정 등을 담고 있다.
+		mapperLocations 속성은 value 속성을 사용하여 classpath:mybatis/mappers/*.xml 경로에 있는 XML 파일들을 매퍼로 설정하고 있다. 
+		이 파일들은 SQL 매핑을 정의한 MyBatis 매퍼 파일들이다.
+		 -->
+	</bean>
+
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+	<!-- 
+	id: Bean의 고유한 식별자 이름.
+	class: Bean으로 생성될 객체의 클래스 이름. Spring 컨테이너는 이 클래스를 인스턴스화하여 Bean으로 관리한다.
+	-->
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+		<!-- 
+		<constructor-arg> 태그는 생성자에 전달할 인자를 지정하며, index 속성은 생성자 인자의 순서를 나타낸다. ref 속성은 다른 빈 객체를 참조하여 해당 인자에 전달한다.
+		따라서 sqlSessionFactory라는 id를 가진 빈 객체를 SqlSessionTemplate의 첫 번째 인자로 전달한다. 
+		즉, sqlSessionFactory를 생성자의 인자로 받아 sqlSession 객체를 생성한다.
+		-->
+	</bean>
+
+</beans>
